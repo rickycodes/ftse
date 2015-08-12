@@ -4,13 +4,13 @@
   "description": "scrape a thing",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
     "chalk": "^1.1.0",
-    "cheerio": "^0.19.0",
-    "request": "^2.60.0"
+    "cheerio": "^0.19.0"
   }
 }
