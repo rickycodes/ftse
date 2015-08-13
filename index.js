@@ -24,8 +24,7 @@ http.get(url, function(res) {
   var body = ''
   res.on('data', function (chunk) {
     body+= chunk
-  })
-  res.on('end', function() {
+  }).on('end', function() {
     output(body)
   })
 })
@@ -37,7 +36,7 @@ function output(body) {
   $table.find('tr').each(function(i, v) {
     if(i > 0) {
       items.push({
-        name: $(this).find('td:nth-child(2)').text(),
+        name: $(this).find('td:nth-child(2)').text().replace(' plc', ' Plc'),
         price: $(this).find('td:nth-child(3)').text(),
         change_amount: $(this).find('td:nth-child(4)').text(),
         change_percent: $(this).find('td:nth-child(5)').text().replace(up_down, '').replace('%', '')
