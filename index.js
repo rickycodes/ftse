@@ -13,10 +13,6 @@ const kind = {
 }
 
 const url = 'http://www.hl.co.uk/shares/stock-market-summary/' + kind[process.argv[2]] + process.argv[3]
-const items = []
-const up_down = (process.argv[3] === 'risers') ? '+' : '-'
-const highlight = (process.argv[3] === 'risers') ? chalk.green : chalk.red
-const amount = 5
 
 console.log(chalk.yellow('wait for it...'))
 
@@ -26,12 +22,18 @@ http.get(url, function(res) {
     body+= chunk
   }).on('end', function() {
     output(body)
+  }).on('error', function(err) {
+    console.log(e.message)
   })
 })
 
 function output(body) {
   const $ = cheerio.load(body)
   const $table = $('[summary="Market index"]')
+  const items = []
+  const up_down = (process.argv[3] === 'risers') ? '+' : '-'
+  const highlight = (process.argv[3] === 'risers') ? chalk.green : chalk.red
+  const amount = 5
 
   $table.find('tr').each(function(i, v) {
     if(i > 0) {
