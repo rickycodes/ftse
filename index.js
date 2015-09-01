@@ -16,18 +16,18 @@ const url = 'http://www.hl.co.uk/shares/stock-market-summary/' + kind[process.ar
 
 console.log(chalk.yellow('wait for it...'))
 
-http.get(url, function(res) {
+const request = http.get(url, function (res) {
   var body = ''
   res.on('data', function (chunk) {
     body+= chunk
-  }).on('end', function() {
+  }).on('end', function () {
     output(body)
-  }).on('error', function(err) {
-    console.log(e.message)
+  }).on('error', function (err) {
+    console.log(err.message)
   })
-})
+}).end()
 
-function output(body) {
+function output (body) {
   const $ = cheerio.load(body)
   const $table = $('[summary="Market index"]')
   const items = []
@@ -35,7 +35,12 @@ function output(body) {
   const highlight = (process.argv[3] === 'risers') ? chalk.green : chalk.red
   const amount = 5
 
-  $table.find('tr').each(function(i, v) {
+  if(!$table.find('tr').length) {
+    console.log(chalk.red('There are currently no ' + process.argv[3]))
+    return
+  }
+
+  $table.find('tr').each(function (i, v) {
     if(i > 0) {
       items.push({
         name: $(this).find('td:nth-child(2)').text().replace(' plc', ' Plc'),
@@ -46,9 +51,9 @@ function output(body) {
     }
   })
 
-  items.sort(function(a, b) {
+  items.sort(function (a, b) {
     return a.change_percent - b.change_percent
-  }).reverse().slice(0, amount).forEach(function(v, i) {
+  }).reverse().slice(0, amount).forEach(function (v, i) {
     console.log(chalk.bold(chalk.cyan(v.name)) + ' ' + highlight(v.change_amount + ' (' + up_down + v.change_percent + '%) ') + chalk.bold(v.price))
   })
 }
