@@ -20,10 +20,10 @@ const request = http.get(url, function (res) {
   var body = ''
   res.on('data', function (chunk) {
     body+= chunk
-  }).on('end', function () {
-    output(body)
   }).on('error', function (err) {
     console.log(err.message)
+  }).on('end', function () {
+    output(body)
   })
 }).end()
 
