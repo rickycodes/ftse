@@ -2,7 +2,7 @@ const cheerio = require('cheerio')
 const http = require('http')
 const chalk = require('chalk')
 
-if(process.argv.length != 4) {
+if (process.argv.length !== 4) {
   console.log(chalk.red('Two arguments required!\nExample arguments: `aim risers`'))
   process.exit(1)
 }
@@ -16,10 +16,10 @@ const url = 'http://www.hl.co.uk/shares/stock-market-summary/' + kind[process.ar
 
 console.log(chalk.yellow('wait for it...'))
 
-const request = http.get(url, function (res) {
+http.get(url, function (res) {
   var body = ''
   res.on('data', function (chunk) {
-    body+= chunk
+    body += chunk
   }).on('error', function (err) {
     console.log(err.message)
   }).on('end', function () {
@@ -35,13 +35,13 @@ function output (body) {
   const highlight = (process.argv[3] === 'risers') ? chalk.green : chalk.red
   const amount = 5
 
-  if(!$table.find('tr').length) {
+  if (!$table.find('tr').length) {
     console.log(chalk.red('There are currently no ' + process.argv[3]))
     return
   }
 
   $table.find('tr').each(function (i, v) {
-    if(i > 0) {
+    if (i > 0) {
       items.push({
         name: $(this).find('td:nth-child(2)').text().replace(' plc', ' Plc'),
         price: $(this).find('td:nth-child(3)').text(),
