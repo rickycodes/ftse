@@ -9,8 +9,34 @@ const spinner = new Spinner(chalk.bold('processing... %s'))
 const cli = meow({
   requireInput: false,
   help: [
-    'Usage',
-    '  ftse --market="market"',
+    'The following options are available:',
+    '',
+    `--${chalk.bold('market')}=market -${chalk.bold('m')}=market`,
+    '   Specify which market, either `aim` or `100` (ftse-100)',
+    '',
+    `--${chalk.bold('limit')}=num -${chalk.bold('l')}=num`,
+    '   Limit the results to a specific number',
+    '',
+    `--${chalk.bold('risers')} -${chalk.bold('r')}`,
+    '   Limit the results to risers only',
+    '',
+    `--${chalk.bold('fallers')} -${chalk.bold('f')}`,
+    '   Limit the results to fallers only',
+    '',
+    `--${chalk.bold('table')} -${chalk.bold('t')}`,
+    '   Render output as a table',
+    '',
+    chalk.bold('USAGE'),
+    '  ftse --market=100',
+    '  => `...`',
+    '',
+    '  ftse --market=aim --limit=5',
+    '  => `...`',
+    '',
+    '  ftse --market=aim --limit=5 --risers',
+    '  => `...`',
+    '',
+    '  ftse --market=aim --limit=10 --fallers',
     '  => `...`',
     '',
     '  ftse --version',
@@ -48,7 +74,7 @@ function format (arr) {
 
 function log (items) {
   spinner.stop(true)
-  console.log(format(items))
+  console.log(format(items) || chalk.bold('no results!'))
 }
 
 function output () {
