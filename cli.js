@@ -24,7 +24,7 @@ const cli = meow({
     '   Limit the results to fallers only',
     '',
     `--${chalk.bold('table')} -${chalk.bold('t')}`,
-    '   Render output as a table',
+    '   Render output as table',
     '',
     chalk.bold('USAGE'),
     '  ftse --market=100',
@@ -48,7 +48,12 @@ function format (arr) {
   const table = cli.flags.table || cli.flags.t
   if (table) {
     const ftseTable = new Table({
-      head: ['name', 'change', 'change %', 'price']
+      head: [
+        chalk.bold('Name'),
+        chalk.bold('Change'),
+        chalk.bold('Change %'),
+        chalk.bold('Price (p)')
+      ]
     })
 
     arr.forEach(function (item) {
