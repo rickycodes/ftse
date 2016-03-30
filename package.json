@@ -1,6 +1,6 @@
 {
   "name": "ftse",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "scrape and filter hl.co.uk market summaries",
   "main": "index.js",
   "scripts": {
@@ -17,6 +17,10 @@
     "meow": "^3.7.0",
     "request": "^2.69.0"
   },
+  "bugs": {
+    "url": "https://github.com/rickycodes/ftse/issues"
+  },
+  "homepage": "https://github.com/rickycodes/ftse",
   "bin": {
     "ftse": "cli.js"
   }
