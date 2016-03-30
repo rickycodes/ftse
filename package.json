@@ -1,16 +1,23 @@
 {
-  "name": "ftse-scraper",
+  "name": "ftse",
   "version": "1.0.0",
-  "description": "scrape a thing",
+  "description": "scrape and filter hl.co.uk market summaries",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "@rickycodes",
   "license": "MIT",
   "dependencies": {
     "chalk": "^1.1.0",
-    "cheerio": "^0.19.0"
+    "cheerio": "^0.19.0",
+    "cli-spinner": "^0.2.4",
+    "cli-table": "^0.3.1",
+    "meow": "^3.7.0",
+    "request": "^2.69.0"
+  },
+  "bin": {
+    "ftse": "cli.js"
   }
 }

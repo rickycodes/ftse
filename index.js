@@ -1,59 +1,31 @@
 const cheerio = require('cheerio')
-const http = require('http')
-const chalk = require('chalk')
+const request = require('request')
 
-if (process.argv.length !== 4) {
-  console.log(chalk.red('Two arguments required!\nExample arguments: `aim risers`'))
-  process.exit(1)
-}
-
-const kind = {
-  '100': 'ftse-100/',
-  'aim': 'ftse-aim-100/'
-}
-
-const url = 'http://www.hl.co.uk/shares/stock-market-summary/' + kind[process.argv[2]] + process.argv[3]
-
-console.log(chalk.yellow('wait for it...'))
-
-http.get(url, function (res) {
-  var body = ''
-  res.on('data', function (chunk) {
-    body += chunk
-  }).on('error', function (err) {
-    console.log(err.message)
-  }).on('end', function () {
-    output(body)
-  })
-}).end()
-
-function output (body) {
-  const $ = cheerio.load(body)
-  const $table = $('[summary="Market index"]')
-  const items = []
-  const up_down = (process.argv[3] === 'risers') ? '+' : '-'
-  const highlight = (process.argv[3] === 'risers') ? chalk.green : chalk.red
-  const amount = 5
-
-  if (!$table.find('tr').length) {
-    console.log(chalk.red('There are currently no ' + process.argv[3]))
-    return
+module.exports = function (market, limit, target, cb) {
+  const baseURL = 'http://www.hl.co.uk/shares/stock-market-summary/'
+  const marketMap = {
+    '100': 'ftse-100/',
+    'aim': 'ftse-aim-100/'
   }
 
-  $table.find('tr').each(function (i, v) {
-    if (i > 0) {
-      items.push({
-        name: $(this).find('td:nth-child(2)').text().replace(' plc', ' Plc'),
-        price: $(this).find('td:nth-child(3)').text(),
-        change_amount: $(this).find('td:nth-child(4)').text(),
-        change_percent: $(this).find('td:nth-child(5)').text().replace(up_down, '').replace('%', '')
-      })
-    }
-  })
+  target = target || ''
+  const url = baseURL + marketMap[market] + target
 
-  items.sort(function (a, b) {
-    return a.change_percent - b.change_percent
-  }).reverse().slice(0, amount).forEach(function (v, i) {
-    console.log(chalk.bold(chalk.cyan(v.name)) + ' ' + highlight(v.change_amount + ' (' + up_down + v.change_percent + '%) ') + chalk.bold(v.price))
+  request({url: url}, function (error, response, body) {
+    if (error) console.log(error)
+    const $ = cheerio.load(body)
+    const $table = $('[summary="Market index"]')
+    const items = [].map.call($table.find('tr'), function (tr, i) {
+      return {
+        name: $(tr).find('td:nth-child(2)').text().replace(' plc', ' Plc'),
+        price: $(tr).find('td:nth-child(3)').text(),
+        change_amount: $(tr).find('td:nth-child(4)').text(),
+        change_percent: $(tr).find('td:nth-child(5)').text()
+      }
+    })
+
+    items.shift()
+
+    cb((limit) ? items.slice(0, limit) : items)
   })
 }
