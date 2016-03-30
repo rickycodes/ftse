@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const ftse = require('./')
 const meow = require('meow')
 const Table = require('cli-table')
