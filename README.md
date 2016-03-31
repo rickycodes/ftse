@@ -1,10 +1,27 @@
-### ftse cli
+## ftse
 
 scrape and filter hl.co.uk market summaries
 
+#### install
+```sh
+$ npm install --save ftse
+```
+
+#### usage
+```js
+var ftse = require('ftse')('aim', 20, null, function(items) {
+  console.log(items) // Array
+})
+```
+
+#### cli
+```
+$ npm install --global ftse
+```
+
 ![example](http://i.imgur.com/IAeP72X.gif)
 
-#### options
+##### options
 
 The following options are available:
 
@@ -25,7 +42,7 @@ The following options are available:
    Render output as table
 ```
 
-#### usage
+##### usage
 
 ```sh
 ftse --market=100
