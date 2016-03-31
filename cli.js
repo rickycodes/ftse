@@ -2,86 +2,21 @@
 
 const ftse = require('./')
 const meow = require('meow')
-const Table = require('cli-table')
+const bold = require('chalk').bold
 const Spinner = require('cli-spinner').Spinner
-const version = require('./package.json').version
-const chalk = require('chalk')
-const spinner = new Spinner(chalk.bold('processing... %s'))
+const spinner = new Spinner(bold('processing... %s'))
+const format = require('./format.js')
 
 const cli = meow({
   requireInput: false,
-  help: [
-    'The following options are available:',
-    '',
-    `--${chalk.bold('market')}=market -${chalk.bold('m')}=market`,
-    '   Specify which market, either `aim` or `100` (ftse-100)',
-    '',
-    `--${chalk.bold('limit')}=num -${chalk.bold('l')}=num`,
-    '   Limit the results to a specific number',
-    '',
-    `--${chalk.bold('risers')} -${chalk.bold('r')}`,
-    '   Limit the results to risers only',
-    '',
-    `--${chalk.bold('fallers')} -${chalk.bold('f')}`,
-    '   Limit the results to fallers only',
-    '',
-    `--${chalk.bold('table')} -${chalk.bold('t')}`,
-    '   Render output as table',
-    '',
-    chalk.bold('USAGE'),
-    '  ftse --market=100',
-    '  => `...`',
-    '',
-    '  ftse --market=aim --limit=5',
-    '  => `...`',
-    '',
-    '  ftse --market=aim --limit=5 --risers',
-    '  => `...`',
-    '',
-    '  ftse --market=aim --limit=10 --fallers',
-    '  => `...`',
-    '',
-    '  ftse --version',
-    '  => ' + version
-  ].join('\n')
+  help: require('./help')()
 })
-
-function format (arr) {
-  const table = cli.flags.table || cli.flags.t
-  if (table) {
-    const ftseTable = new Table({
-      head: [
-        chalk.bold('Name'),
-        chalk.bold('Change'),
-        chalk.bold('Change %'),
-        chalk.bold('Price (p)')
-      ]
-    })
-
-    arr.forEach(function (item) {
-      const change_color = item.change_amount.indexOf('+') !== -1 ? chalk.green : chalk.red
-      const change_percent = `(${item.change_percent})`
-      ftseTable.push([
-        chalk.bold(chalk.cyan(item.name)),
-        change_color(item.change_amount),
-        change_color(change_percent),
-        chalk.bold(item.price)
-      ])
-    })
-
-    return ftseTable.toString()
-  } else {
-    return arr.map(function (item) {
-      const change_color = item.change_amount.indexOf('+') !== -1 ? chalk.green : chalk.red
-      const change_percent = `(${item.change_percent})`
-      return `${chalk.bold(chalk.cyan(item.name))} ${change_color(item.change_amount)} ${change_color(change_percent)} ${chalk.bold(item.price)}`
-    }).join('\n')
-  }
-}
 
 function log (items) {
   spinner.stop(true)
-  console.log(format(items) || chalk.bold('no results!'))
+  const table = cli.flags.table || cli.flags.t
+  const out = (table) ? format.table(items) : format.normal(items)
+  console.log(out || bold('no results!'))
 }
 
 function output () {
