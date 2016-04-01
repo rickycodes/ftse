@@ -3,17 +3,19 @@
 const ftse = require('./')
 const meow = require('meow')
 const bold = require('chalk').bold
-const Spinner = require('cli-spinner').Spinner
-const spinner = new Spinner(bold('processing... %s'))
 const format = require('./format.js')
-
+const spinner = require('ora')({
+  color: 'white',
+  text: 'processing',
+  spinner: 'line'
+})
 const cli = meow({
   requireInput: false,
   help: require('./help')()
 })
 
 function log (items) {
-  spinner.stop(true)
+  spinner.stop()
   const table = cli.flags.table || cli.flags.t
   const out = (table) ? format.table(items) : format.normal(items)
   console.log(out || bold('no results!'))

@@ -1,6 +1,6 @@
 {
   "name": "ftse",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "scrape and filter hl.co.uk market summaries",
   "main": "index.js",
   "scripts": {
@@ -12,9 +12,9 @@
   "dependencies": {
     "chalk": "^1.1.0",
     "cheerio": "^0.19.0",
-    "cli-spinner": "^0.2.4",
     "cli-table": "^0.3.1",
     "meow": "^3.7.0",
+    "ora": "^0.2.1",
     "request": "^2.69.0"
   },
   "bugs": {
