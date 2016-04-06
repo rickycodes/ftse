@@ -23,7 +23,6 @@ function log (items) {
 
 function output () {
   const market = cli.flags.market || cli.flags.m
-  if (!market) return
   if (market) {
     spinner.start()
     const limit = cli.flags.limit || cli.flags.l || false

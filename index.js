@@ -8,8 +8,7 @@ module.exports = function (market, limit, target, cb) {
     'aim': 'ftse-aim-100/'
   }
 
-  target = target || ''
-  const url = baseURL + marketMap[market] + target
+  const url = baseURL + marketMap[market] + (target || '')
 
   request({url: url}, function (error, response, body) {
     if (error) console.log(error)
@@ -17,10 +16,10 @@ module.exports = function (market, limit, target, cb) {
     const $table = $('[summary="Market index"]')
     const items = [].map.call($table.find('tr'), function (tr, i) {
       return {
-        name: $(tr).find('td:nth-child(2)').text().replace(' plc', ' Plc'),
-        price: $(tr).find('td:nth-child(3)').text(),
-        change_amount: $(tr).find('td:nth-child(4)').text(),
-        change_percent: $(tr).find('td:nth-child(5)').text()
+        'name': $(tr).find('td:nth-child(2)').text().replace(' plc', ' Plc'),
+        'price': $(tr).find('td:nth-child(3)').text(),
+        'change_amount': $(tr).find('td:nth-child(4)').text(),
+        'change_percent': $(tr).find('td:nth-child(5)').text()
       }
     })
 
