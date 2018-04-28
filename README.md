@@ -1,5 +1,7 @@
 ## ftse
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/rickycodes/ftse.svg)](https://greenkeeper.io/)
+
 scrape and filter hl.co.uk market summaries
 
 #### install
